@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:#ffeef3;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.screen{
+  text-align:center;
+  padding:20px;
+  width:100%;
+}
+
+.hidden{display:none;}
+
+h1{
+  color:#ff4d79;
+  margin-bottom:16px;
+}
+
+p{color:#555;margin-bottom:15px;}
+
+button{
+  border:none;
+  border-radius:50px;
+  padding:14px 36px;
+  font-size:1rem;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.btn-main{
+  background:linear-gradient(135deg,#ff5f8f,#ff85a2);
+  color:#fff;
+}
+
+.btn-secondary{
+  background:#eee;
+  color:#555;
+}
+
+.btn-group{
+  display:flex;
+  gap:20px;
+  justify-content:center;
+}
+
+.envelope-grid{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(300px, 1fr));
+  gap:36px;
+  width:100%;
+  max-width:1400px;        /* ⬅ wider container */
+  margin:40px auto;        /* ⬅ TRUE CENTERING */
+  justify-content:center;  /* ⬅ FIXES LEFT SHIFT */
+  align-items:end;
+}
+
+.envelope{
+  width:300px;
+  height:200px;
+  position:relative;
+  cursor:pointer;
+}
+
+
+.envelope-body{
+  width:100%;
+  height:100%;
+  background:#ff7fa2;
+  border-radius:12px;
+}
+
+.envelope-flap{
+  position:absolute;
+  inset:0;
+  background:#ff9ab7;
+  clip-path:polygon(0 0,100% 0,50% 60%);
+  transform-origin:top;
+  transition:.6s;
+}
+
+.letter{
+  position:absolute;
+  top:20px;                 /* stays inside envelope */
+  left:20px;
+  right:20px;
+  bottom:20px;              /* ⬅ locks it INSIDE */
+  
+  background:#fff;
+  border-radius:14px;
+  padding:16px 18px;
+
+  font-size:0.95rem;
+  line-height:1.5;
+
+  opacity:0;
+  transition:opacity .5s ease, transform .5s ease;
+  transform:scale(0.95);
+
+  overflow-y:auto;
+}
+
+.envelope.open .envelope-flap{
+  transform:rotateX(180deg);
+}
+
+.envelope.open .letter{
+  opacity:1;
+  transform:translateY(-20px);
+}
+
+/* ================= MEMORY GRID ================= */
+.memory-grid{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:28px;
+  margin-top:25px;
+  perspective:1000px;
+}
+
+.memory-card{
+  width:200px;
+  height:350px;
+  background:#fff;
+  border-radius:20px;
+  position:relative;
+  cursor:pointer;
+  overflow:hidden;
+  box-shadow:0 10px 25px rgba(0,0,0,.12);
+}
+
+.gift-layer,
+.memory-content{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.gift-layer{
+  font-size:3.2rem;
+}
+
+.memory-content{
+  opacity:0;
+  transform:scale(.9);
+  transition:.4s;
+}
+
+.memory-card.open .gift-layer{opacity:0;}
+.memory-card.open .memory-content{
+  opacity:1;
+  transform:scale(1);
+}
+
+.memory-content img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* ROTATE EFFECT */
+.memory-card.open{
+  animation:popRotate .5s ease;
+}
+
+@keyframes popRotate{
+  0%{transform:rotateY(0deg) scale(1)}
+  40%{transform:rotateY(20deg) scale(1.08)}
+  70%{transform:rotateY(-8deg) scale(1.02)}
+  100%{transform:rotateY(0deg) scale(1)}
+}
+/* SCREEN 2 GIF SIZE FIX */
+.img-row{
+  display:flex;
+  gap:16px;
+  justify-content:center;
+  align-items:center;
+  margin:20px 0;
+}
+
+.img-row img{
+  width:200px;       /* 🔹 CHANGE THIS VALUE to resize */
+  max-width:150%;
+  border-radius:20px;
+}
+
+/* SCREEN 3 CARD */
+.late-card{
+  background:#fff;
+  padding:50px 45px;
+  border-radius:25px;
+  max-width:750px;
+  margin:0 auto;
+  box-shadow:0 20px 45px rgba(0,0,0,.15);
+}
+
+.late-card h2{
+  color:#ff4d79;
+  margin-bottom:10px;
+}
+
+.late-sub{
+  color:#555;
+  margin-bottom:18px;
+}
+
+.late-text p{
+  margin:6px 0;
+  font-size:.95rem;
+  color:#333;
+}
+
+.late-text .ok{
+  color:#1aa36f;
+  font-weight:500;
+}
+
+.late-footer{
+  margin:18px 0;
+  color:#ff5f8f;
+  font-weight:500;
+}
+
+/* SCREEN 4 – BUTTON STYLE DATE IDEAS */
+.date-card{
+  background:#fff;
+  padding:40px 44px;
+  border-radius:22px;
+  max-width:820px;
+  margin:0 auto;
+  box-shadow:0 18px 45px rgba(0,0,0,.12);
+}
+
+.date-card h2{
+  text-align:center;
+  color:#ff4d79;
+  margin-bottom:26px;
+  font-size:2rem;
+}
+
+.date-buttons{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  margin-bottom:28px;
+}
+
+.date-btn{
+  background:#f7f7f7;
+  padding:14px 18px;
+  border-radius:14px;
+  font-size:1.05rem;
+  color:#333;
+  cursor:default;
+  transition:.25s ease;
+}
+
+.date-btn:hover{
+  background:#ffe6ef;
+  transform:translateX(4px);
+}
+
+.date-card button{
+  display:block;
+  margin:0 auto;
+}
+
+/* MEMORY YEAR TAG */
+.memory-year{
+  position:absolute;
+  bottom:14px;
+  left:50%;
+  transform:translateX(-50%);
+
+  background:rgba(0,0,0,0.5);
+  color:#fff;
+  padding:6px 16px;
+  border-radius:20px;
+
+  font-size:0.85rem;
+  font-weight:500;
+  letter-spacing:0.5px;
+
+  backdrop-filter:blur(4px);
+}
+
+const next6 = document.getElementById("next6");
+const s7 = document.getElementById("s7");
+
+next6.onclick = () => {
+  s6.classList.add("hidden");
+  s7.classList.remove("hidden");
+};
+
+#s6{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+#s6 .btn-main{
+  margin-top:30px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- SCREEN 1 -->
+<div class="screen" id="s1">
+  <h1>Will you be my Valentine? 💕</h1>
+  <p>Official invite from your AMMU 😘</p>
+  <div class="btn-group">
+    <button class="btn-main" id="yesBtn">YES 💖</button>
+    <button class="btn-secondary" id="noBtn">NO 😐</button>
+  </div>
+</div>
+
+<!-- SCREEN 2 -->
+<div class="screen hidden" id="s2">
+  <h1>Good choice mama🥰</h1>
+<p>You just unlocked unlimited hugs, kisses & cuddles 💖</p>
+<div class="img-row">
+<img src="https://media1.tenor.com/m/JMyM1f8Vge4AAAAC/dudu-bubu.gif">
+<img src="https://media.tenor.com/i6FYyfAiT4QAAAAC/cute-bubu.gif">
+<img src="https://media1.tenor.com/m/bsSOg1KPHS0AAAAC/dudu-bubu-new-dudu.gif">
+</div>
+<p><strong>Now you're stuck with me FOREVER man 😘∞</strong></p>
+  <button class="btn-main" id="next2">Wait actually........ No😈😐</button>
+</div>
+
+<!-- SCREEN 3 -->
+<div class="screen hidden" id="s3">
+  <div class="late-card">
+    <h2>TOO LATE! 🥺</h2>
+
+    <p class="late-sub">
+      ✅ You already said YES, which means:
+    </p>
+
+    <p>❌ No take-backs allowed</p>
+    <p>❌ You’re legally mine now (I checked)</p>
+    <p>❌ Every “no” = 10 extra kisses</p>
+    <p class="ok">✅ You’re stuck with me FOREVER 😈</p>
+
+    <p class="late-footer">Deal with me love 😘👉</p>
+
+    <button class="btn-main" id="next3">Next 💕</button>
+  </div>
+</div>
+
+<!-- SCREEN 4 -->
+<!-- SCREEN 4 -->
+<div class="screen hidden" id="s4">
+  <div class="date-card">
+
+    <h2>Our Virtual Date Ideas 💖</h2>
+
+    <div class="date-buttons">
+      <div class="date-btn">🎬 Netflix party + video call (I'll let you pick… maybe)</div>
+      <div class="date-btn">🍕 Order the food & Spend time together</div>
+      <div class="date-btn">🌙 Late night talks that somehow turn into sleeping</div>
+      <div class="date-btn">🎵 Playlist exchange & argue about music taste (you’re wrong btw)</div>
+      <div class="date-btn">🤳 Send me your selfies so I can simle shamelessly</div>
+      <div class="date-btn">🎮 Play games together & Cook food together</div>
+      <div class="date-btn">☕ Virtual coffee dates & road side shop dinner</div>
+    </div>
+
+    <button class="btn-main" id="next4">One last thing 💕</button>
+
+  </div>
+</div>
+
+<!-- SCREEN 5 -->
+<div class="screen hidden" id="s5">
+  <h1>Secret Notes 💌</h1>
+
+  <div class="envelope-grid">
+    <div class="envelope"><div class="envelope-flap"></div><div class="envelope-body"></div><div class="letter"><h2>HAPPY ROSE DAY MAMA </h2>
+<P>Indha rose romba simple dhaan…
+but idhukulla irukkura feelings romba heavy laa
+
+Neega en life-la vandha naal la irundhu,
+ellam konjam calm-a maariduchu i mean,
+Problems pogala… but face panna strength vandhuduchu.
+
+Sometimes naan sollama iruppen,
+sometimes life heavy achina i search for u because,
+neega irukuriga therinjaale podhum.
+Adhu dhaan en biggest comfort.
+
+This rose is not for “love day” reasons.
+It’s for all the days you stood by me
+without asking anything back.
+
+Naan perfect illa,
+but one thing I’m sure about —
+nee dhaan en safe place. Always. 🌹</p>
+</div></div>
+
+    <div class="envelope"><div class="envelope-flap"></div><div class="envelope-body"></div><div class="letter"><h2>HAPPY PROPOSE DAY MAMA🥰</h2><p>I love you to the moon and back mama Neega en life-la vandha nala irudhu
+things didn’t become perfect…u made it perfect when it started feeling safe.
+When the world feels too loud,
+neega pakkathula irundhaa,
+everything slows down.
+My mind breathes.
+I don’t promise a perfect life,
+or a fairytale.
+But I promise this —
+I’ll choose you, even on the hard days.
+No rush. No pressure.
+Just you and me,
+avlodha enaku venum and idhula vera yarumey vara mudiyadhu even my parents cant seperate us remember always i am crazy at you like anything even words cant describe...i will choose you over me love you so much man.</p>
+</div></div>
+
+    <div class="envelope"><div class="envelope-flap"></div><div class="envelope-body"></div><div class="letter"><h2>HAPPY CHOCOLATE DAY MAMA 🍫🤍</h2><p>
+
+Chocolate sweet-aa irukkaradhu madhiri,
+neega en life-la vandhadhum
+days konjam softer-aa feel aagudhu.
+
+Not because everything is perfect,
+but because you make the ordinary moments feel special.
+Even silence feels warmer when it’s with you.
+
+Sometimes words venam, gifts venam —
+just knowing you’re there is enough.
+you don’t fix everything…
+but you make it better and sometime you are the one who fix everthing as well.....
+and i feel like neega irukkura varaikum,
+naan happyaah irukka reason thedi pogave vendam.so im 
+Always choosing you,
+Always a little more than yesterday 🤍🍫</p>
+</div></div>
+
+    <div class="envelope"><div class="envelope-flap"></div><div class="envelope-body"></div><div class="letter"><H2>HAPPY TEDDY DAY MAMA🤍🧸</H2><p>Some times silentaah steady-aah.irukiradhudha venum nenikuren because Sometimes adhu dhaan romba theva.
+Not advice. Not solutions.
+Just someone who stays.
+Nee en life-la andha madhiri.
+When I’m confused,
+when I don’t know what to say,
+neega irukkura presencey podhum.like that teddy is not about being cute.
+It’s about reminding you —
+even on days you feel unseen or tired,
+there’s someone who holds space for you,
+without questions abidu dha neegalum
+neega yaarukkum prove panna vendam.
+Enaku neega already enough.and no matter ena prblm vandlum pathukalam 
+Always here.
+Quietly. Constantly. 🤍🧸
+</div></div>
+
+    <div class="envelope"><div class="envelope-flap"></div><div class="envelope-body"></div><div class="letter"><h2>HAPPY PROMISE DAY MAMA💕</h2><p>I promise ill stay with you forever no matter what ill choose you over and over and sometimes na sona promise enala pana mudilana sorry for that im trying my best give you what you deserve and i thing im not the one for u but thanks to choose me i promise ill love u more than anybody and i promise that no body can be u for me Life unpredictable…
+naanum perfect illa.
+
+But idhu onnu mattum naan sollren
+when things get messy,
+when days feel heavy,
+I won’t disappear.
+
+Sometimes naan silentaah iruppen,
+sometimes words correctaah varaadhu.
+But even then,
+my choice won’t change.
+
+I promise to stay —
+not just in happy moments,
+but in the quiet ones,
+where nothing needs fixing,
+only presence.</p>
+</div></div>
+
+    <div class="envelope"><div class="envelope-flap"></div><div class="envelope-body"></div><div class="letter"><h2>HAPPY HUG DAY MAMA 💞✨</h2>
+<p>Hug is something special because every hug from you feels like a warm blanket on a cold day pure comfort and love and for me, man who makes every hug feels home and my amazing husband and i love you more than words can't express and noting feels better then your hug, its something theropy which i never want to pass through and sometime solamaah edhachi feel pandrapo u hug made it comfort and safe idhu nerayaah time aai iruku but i havent told you Nee hug pannumbodhu,
+naan romba strongaah irukkanum nu nadikka vendam.
+Ellam safeaah irukkum madhiri feel aagum thanks for that man....</p>
+</div></div>
+
+    <div class="envelope"><div class="envelope-flap"></div><div class="envelope-body"></div><div class="letter"><h2>HAPPY KISS DAY MAMA😘💞</h2>
+<p>kiss romba loud illa.
+It doesn’t ask for attention.
+It’s gentle… like a promise whispered close.
+Nee pakkathula irundhaa,
+words theva illa.
+Just that small moment,
+where everything feels right.
+This kiss is not about passion alone.
+It’s about comfort.
+About saying “I’m here, I choose you”
+without needing to explain anything
+sometimes, one quiet kiss can say
+everything the heart feels and na idhu unga kita irudhu nerayaah vati pathu iruken and about your kiss fells like the day i 1st time kissed you to be frank apo evlo question irudhuhci theriyumaah kita vara vara but when lip touches yours it become black and butterflies paah....marakavey mudiyadhu pola...
+</div></div>
+
+    <div class="envelope"><div class="envelope-flap"></div><div class="envelope-body"></div><div class="letter"><H2>HAPPY VALENTINES DAY MAMA💌</H2>
+<P> enaku valentines day dha spl nu ila unga kuda eppo irudhalum its spl only every bad day will turn into best day into your arms and thank you for being there whenever i say to be in home without any second thought and starting la irudhu varanum na nerayaah thanks and nerayaah sorry solanum 1st sona mari dha i deserve you aah nu therila but ill try my best to be perfect for u and i promise illnever make you cry once you marry me ill keep u as my baby and king its promise from me and..future pathi ipo idhula peasa virubala nerla soluren ipo dhiku love you too the core and i want to be your in 7 jenmam......or more than that infinity i want to be your evlo prblm vanalum will face it together and never leave beside of us...love you lot mama 💞</p>
+</div></div>
+  </div>
+
+  <button class="btn-main" id="next5">Our Memories 💞</button>
+</div>
+
+<!-- SCREEN 6 -->
+<div class="screen hidden" id="s6">
+  <h1>Our Memories 💞</h1>
+
+  <div class="memory-grid">
+<div class="memory-card"><div class="gift-layer">🎁</div><div class="memory-content"><img src="C:\Users\Shalini\Downloads\WhatsApp Image 2026-02-06 at 4.34.05 PM (2).jpeg"><span class="memory-year">2020</span></div></div>
+    <div class="memory-card"><div class="gift-layer">🎁</div><div class="memory-content"><img src="C:\Users\Shalini\Downloads\WhatsApp Image 2026-02-06 at 4.34.05 PM.jpeg"><span class="memory-year">2021</span></div></div>
+    <div class="memory-card"><div class="gift-layer">🎁</div><div class="memory-content"><img src="C:\Users\Shalini\OneDrive\Desktop\Certificates\index.html.jpeg"><span class="memory-year">2022</span></div></div>
+    <div class="memory-card"><div class="gift-layer">🎁</div><div class="memory-content"><img src="C:\Users\Shalini\Downloads\WhatsApp Image 2026-02-06 at 4.34.04 PM (1).jpeg"><span class="memory-year">2023</span></div></div>
+    <div class="memory-card"><div class="gift-layer">🎁</div><div class="memory-content"><img src="C:\Users\Shalini\Downloads\WhatsApp Image 2026-02-06 at 4.34.04 PM.jpeg"><span class="memory-year">2024</span></div></div>
+    <div class="memory-card"><div class="gift-layer">🎁</div><div class="memory-content"><img src="C:\Users\Shalini\Downloads\WhatsApp Image 2026-02-06 at 4.34.05 PM (1).jpeg"><span class="memory-year">2025</span></div></div>
+  </div>
+</div>
+
+<!-- SCREEN 7 : QUIZ -->
+<div class="screen hidden" id="s7">
+  <div class="quiz-card">
+    <h2>Quick Quiz for You 💖</h2>
+    <p>Let’s see how well you know *us* 😉</p>
+
+    <div class="quiz-question">
+      <p>💘 Where did we first talk properly?</p>
+      <button class="quiz-btn wrong">Instagram</button>
+      <button class="quiz-btn correct">WhatsApp</button>
+      <button class="quiz-btn wrong">In Person</button>
+    </div>
+
+    <div class="quiz-result hidden" id="quizResult">
+      <h3>Correct 😘</h3>
+      <p>Of course you remember ❤️</p>
+    </div>
+
+    <button class="btn-main hidden" id="finishBtn">Finish 💞</button>
+  </div>
+</div>
+
+<script>
+let scale=1;
+
+yesBtn.onclick=()=>{s1.classList.add("hidden");s2.classList.remove("hidden")}
+noBtn.onclick=()=>{
+  scale+=0.4;
+  yesBtn.style.transform=`scale(${scale})`;
+}
+
+next2.onclick=()=>{s2.classList.add("hidden");s3.classList.remove("hidden")}
+next3.onclick=()=>{s3.classList.add("hidden");s4.classList.remove("hidden")}
+next4.onclick=()=>{s4.classList.add("hidden");s5.classList.remove("hidden")}
+next5.onclick=()=>{s5.classList.add("hidden");s6.classList.remove("hidden")}
+
+document.querySelectorAll(".envelope").forEach(e=>{
+  e.onclick=()=>e.classList.toggle("open");
+});
+
+document.querySelectorAll(".memory-card").forEach(c=>{
+  c.onclick=()=>c.classList.add("open");
+});
+</script>
+
+</body>
+</html>
